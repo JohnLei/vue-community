@@ -29,8 +29,8 @@
           </el-dropdown-menu>
         </el-dropdown>
         <div class="login">
-          <span class="login-in">登录</span>
-          <span class="avatar">
+          <span class="login-in" @click="gologin" v-if="_ifLogin === false">登录</span>
+          <span class="avatar" v-else>
             <router-link :to="'/user/' + login.loginname">
               <img :src="login.avatar_url" alt="">
             </router-link>
@@ -52,7 +52,7 @@
     },
     // 生命钩子函数
     created () {
-
+      this.getUnReadMessages()
     },
     updated() {
       
@@ -83,6 +83,31 @@
         } else {
           this.$router.push(command)
         }
+      },
+      gologin () {
+        this.$router.push('/login')
+      },
+      // 获取登录时的token
+      getUnReadMessages () {
+        if (this.$store.state.ifLogin) {
+          this.axios({
+            method: 'get',
+            url: 'https://www.vue-js.com/api/v1/message/count?accesstoken=' + this.$store.state.token
+          })
+          .then(res => {
+            this.$store.state.readCount = res.data.data
+          })
+        }
+      },
+      exit () {
+        // 清楚sessionstroage
+        sessionStorage.removeItem('accesstoken')
+        sessionStorage.removeItem('userInfo')
+        sessionStorage.removeItem('loginInfo')
+        this.$store.state.loginInfo = ''
+        this.$store.state.ifLogin = false
+        this.$router.push('/home')
+
       }
     }
   }
