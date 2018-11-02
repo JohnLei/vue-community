@@ -31,8 +31,8 @@
         <div class="login">
           <span class="login-in">登录</span>
           <span class="avatar">
-            <router-link to="/user/">
-              <img src="" alt="">
+            <router-link :to="'/user/' + login.loginname">
+              <img :src="login.avatar_url" alt="">
             </router-link>
           </span>
         </div>
@@ -44,7 +44,7 @@
 <script>
   export default {
     name: 'v-header',
-    inject: ['reload'],
+    // inject: ['reload'],
     data () {
       return {
         
@@ -57,8 +57,33 @@
     updated() {
       
     },
-    methods: {
+    // 计算属性监听store中的值
+    computed: {
+      count () {
+        return this.$store.state.readCount
+      },
+      login () {
+        return this.$store.state.loginInfo
+      },
+      _ifLogin () {
+        return this.$store.state.ifLogin
+      },
+      loading () {
+        return this.$store.state.loading
+      }
 
+    },
+    methods: {
+      handleCommand (command) {
+        if (command === 'exit') {
+          this.exit()
+          // this.reload()
+        } else if (command === '/user') {
+          this.$router.push(command + '/' + this.login.loginname)
+        } else {
+          this.$router.push(command)
+        }
+      }
     }
   }
 </script>
