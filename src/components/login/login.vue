@@ -5,7 +5,7 @@
       placement="top-start"
       title="accesstoken的获取方法"
       width="200"
-      trigger="hove"
+      trigger="hover"
       content="登录 vue.js 社区 选择 '设置' 并滑到底部可以看到 accesstoken">
       <el-input slot="reference" v-model="token" class="login-input" placeholder="请使用 accesstoken 登录"></el-input>
       </el-popover>
@@ -15,9 +15,52 @@
 </template>
 
 <script>
-  
+ export default {
+   name: 'login',
+   data () {
+     return {
+       token: ''
+     }
+   },
+   methods: {
+     login () {
+       if (this.token === '') {  // 判断是否有token
+          this.$message({
+            message:'请输入accesstoken',
+            type:'erro'
+          })
+          return 0
+       } else {
+         // 发送登录的请求信息
+         this.axios({
+           method: 'post',
+           url: 'https://www.vue-js.com/api/v1/accesstoken' , accesstoken: this.token
+         })
+         .then(res => {
+          //  console.log(res)
+          sessionStorage.setItem('accesstoken',this.token)
+          sessionStorage.setItem('loginInfo', JSON.stringify(res.data.data))
+           this.$store.state.token = this.token
+           this.$store.state.ifLogin = true
+           this.$store.state.loginInfo = res.data
+           this.$router.push('home')
+         })
+       }
+     }
+   }
+ } 
 </script>
 
 <style lang="scss" scoped>
-
+.wrapper {
+  position: relative;
+  .login {
+    position: absolute;
+    top: 1em;
+    right: 10em;
+    .login-input {
+      width: 20em;
+    }
+  }
+}
 </style>
