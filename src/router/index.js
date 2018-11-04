@@ -11,6 +11,12 @@ export default new Router({
       meta: {
         requireAuth: true
       }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: resolve => require(['@/components/login/login'], resolve)
+
     }
   ]
 })
