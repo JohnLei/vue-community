@@ -17,6 +17,46 @@
 </template>
 
 <script>
+import {getDateDiff} from '@/assets/js/date'  // 导入格式化时间的工具函数
+export default {
+  name: 'user',
+  data () {
+    return {
+      authorInfo: ''
+    }
+  },
+  // 生命钩子函数
+  created() {
+    this.getLoginInfo()
+    this.getAuthorInfo()
+  },
+  methods: {
+    getLoginInfo () { // 获取登录信息 解决markdown跳转导致vuex失效
+      this.$store.state.ifLogin = true
+      this.$store.state.token = sessionStorage.accesstoken
+       this.$store.state.loginInfo = JSON.parse(sessionStorage.loginInfo)
+       this.$store.state.userInfo = JSON.parse(sessionStorage.userInfo)
+    },
+    getAuthorInfo () {  // 获取角色信息
+      this.axios({
+        method: 'get',
+        url: 'https://www.vue-js.com/api/v1/user/' + this.$route.params.id
+      })
+      .then (res => {
+        // console.log(res)
+        if (res.statusText === 'ok') {
+          this.authorInfo = res.data.data
+        }
+      })
+    }
+  },
+  // 过滤器
+  filters: {
+    getDateDiff (time) {
+      return getDateDiff(new Date(time).getTime())
+    }
+  }
+}
   
 </script>
 
