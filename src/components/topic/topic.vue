@@ -24,7 +24,7 @@
             <span class="top">置顶</span>
             <span class="good">精华</span>
             <span class="other-tab">内容</span>
-            <!-- <router-link to=""></router-link> -->
+            <router-link to=""><span class="title">标题</span></router-link>
             <span class="time">时间</span>
           </li>
         </ul>
@@ -116,6 +116,14 @@
           font-size: 0.875em;
         }
         .other-tab {
+          margin-left: 1em;
+          background-color: #e5e5e5;
+          color: #999;
+          padding: 0.1em 0.5em;
+          border-radius: 3px;
+          font-size: 0.857em;
+        }
+        .title {
           display: inline-block;
           margin-left: 1em;
           max-width: 60%;
