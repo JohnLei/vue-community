@@ -30,5 +30,12 @@ import topic from '@/components/topic/topic'
 </script>
 
 <style lang="scss" scoped>
-
+.home {
+  margin-top: 1em;
+  .left {
+    width: 60%;
+    margin-left: 6em;
+    float: left;
+  }
+}
 </style>

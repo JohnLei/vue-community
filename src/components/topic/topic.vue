@@ -18,14 +18,14 @@
     <transition name="fade">
       <div class="content">
         <ul>
-          <li>
-            <span class="avatar">img</span>
-            <span class="count">条数</span>
-            <span class="top">置顶</span>
-            <span class="good">精华</span>
-            <span class="other-tab">内容</span>
-            <router-link to=""><span class="title">标题</span></router-link>
-            <span class="time">时间</span>
+          <li v-for="(item,index) in res" :key="index">
+            <span class="avatar"><img :src="item.author.avatar_url" alt=""></span>
+            <span class="count">{{item.reply_count}}/<i>{{item.visit_count}}</i></span>
+            <span class="top" v-if="item.top">置顶</span>
+            <span class="good" v-else-if="item.good">精华</span>
+            <span v-else v-show="currentTab === 'all'" class="other-tab">{{tabCH[item.tab]}}</span>
+            <router-link :to="{path: '/topicdetail', query: {id: item.id }}"><span class="title">{{item.title}}</span></router-link>
+            <span class="time">{{item.last_reply_at | getDateDiff}}</span>
           </li>
         </ul>
         <div class="pagination">
@@ -43,20 +43,77 @@
 </template>
 
 <script>
+import {getDateDiff} from '@/assets/js/date'
  export default {
+   name: 'topic',
    data () {
      return {
+       res: '',
+       tab: ['','all','good','wexx','share','ask','job'], // 主题分类
+       tabCH: {
+         good: '精华',
+         weex: 'weex',
+         share: '分享',
+         ask: '问答',
+         job: '招聘'
+       },
+       currentTab: 'all',  // 选中全部分类时显示为哪种分类
+       list: false,  // tab 切换时的过度效果
+       totalPage: 0, // 显示的总页数 
+       showPage: true,
        currentPage: 1
      }
    },
-   methods: {
-     handleCurrentChange (val) {
+   // 生命钩子函数
+   created () {
+    //  this.getTotalPage()
+    this.getTopic()
+   },
+   updated () {
 
+   },
+   methods: {
+     getTotalPage () {  // 获取总页数
+        this.axios({
+          method: 'get',
+          url: 'https://www.vue-js.com/api/v1/topics/?&tab=' + this.currentTab
+        })
+        .then(res => {
+          // console.log(res)
+          this.totalPage = res.data.data.length
+        })
+     },
+     // 获取后台的数据
+     getTopic (tab, page = 1, limit = 10) {
+       this.showPage = false
+       this.list = false
+       this.$store.state.loading = true
+       this.axios({
+         method: 'get',
+         url: 'https://www.vue-js.com/api/v1/topics/?page=' + page + '&tab' + tab + '&limit=' + limit + ''
+       })
+       .then(res => {
+        //  console.log(res)
+        this.$store.state.loading = false
+        this.list = true
+        this.showPage = true
+        this.res = res.data.data
+       })
+     },
+     handleCurrentChange (val) {
+       this.getTopic(this.currentTab,val)
      },
      handleSelect (key) {
-
+       this.getTopic(this.tab[key])
+       this.currentTab = this.tab[key]
+       this.currentPage = 1
      }
-   }
+   },
+    filters: {
+      getDateDiff (time) {
+        return getDateDiff(new Date(time).getTime())
+      }
+    }
  } 
 </script>
 
@@ -134,7 +191,7 @@
           overflow: hidden;
         }
         .time {
-          float: left;
+          float: right;
           margin-right: 1em;
           font-size: 0.875em;
           color: #777;
