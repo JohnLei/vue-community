@@ -57,5 +57,27 @@ import asides from '@/components/aside/aside'
     margin-left: 6em;
     float: left;
   }
+  .right{
+      width: 22%;
+      margin-left: 1em;
+      float: left;
+      .create-Topic{
+        margin-top: 1em;
+        padding: 0.8em;
+        background-color: #fff;
+        border-radius: 0.3em;
+        span{
+          font-size: 0.875em;
+          cursor: pointer;
+          border-radius: 0.3em;
+          padding: 0.4em;
+          color: #fff;
+          background-color: #369219;
+          &:hover{
+            background-color: #6ba44e;
+          }
+        }
+      }
+    }
 }
 </style>
