@@ -4,7 +4,7 @@
       <topic />
     </div>
     <div class="right">
-      aside组件
+      <asides></asides>
       <div class="create-Topic">
         <span>发布话题</span>
       </div>
@@ -14,6 +14,7 @@
 
 <script>
 import topic from '@/components/topic/topic'
+import asides from '@/components/aside/aside'
   export default {
     data () {
       return {
@@ -24,7 +25,8 @@ import topic from '@/components/topic/topic'
 
     },
     components: {
-      topic
+      topic,
+      asides
     }
   }
 </script>
