@@ -6,7 +6,7 @@
     <div class="right">
       <asides :author="user" v-if="user"></asides>
       <div class="create-Topic">
-        <span>发布话题</span>
+        <span @click="createTopic">发布话题</span>
       </div>
     </div>
   </div>
@@ -21,8 +21,26 @@ import asides from '@/components/aside/aside'
         user: ''
       }
     },
+    // 生命钩子函数
+    created() {
+      this.getloginInfo()
+    },
     methods: {
-
+      getloginInfo () {
+        this.axios({
+          method: 'get',
+          url: 'https://www.vue-js.com/api/v1/user/' + this.$store.state.loginInfo.loginname
+        })
+        .then(res => {
+          console.log(res)
+          this.user = res.data.data
+          sessionStorage.setItem('userInfo', JSON.stringify(res.data.data))
+          this.$store.state.userInfo = res.data.data
+        })
+      },
+      createTopic () {
+        this.$router.push('/create')
+      }
     },
     components: {
       topic,
