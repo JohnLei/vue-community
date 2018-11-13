@@ -4,7 +4,7 @@
       <topic />
     </div>
     <div class="right">
-      <asides></asides>
+      <asides :author="user" v-if="user"></asides>
       <div class="create-Topic">
         <span>发布话题</span>
       </div>
@@ -18,7 +18,7 @@ import asides from '@/components/aside/aside'
   export default {
     data () {
       return {
-        
+        user: ''
       }
     },
     methods: {

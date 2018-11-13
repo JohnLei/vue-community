@@ -1,6 +1,6 @@
 <template>
- <div class="author">
-   <div class="title"></div>
+ <div class="author" v-if="author">
+   <div class="title">{{author.loginname === loginName ? '个人信息' : '作者信息'}}</div>
    <div class="content">
     <div class="avatar">
       <router-link :to="'/user/'+author.loginname">
@@ -52,5 +52,52 @@
 </script>
 
 <style lang="scss" scoped>
-
+.author{
+    width: 100%;
+    font-size: 0.875rem;
+    .title{
+      background-color: #f6f6f6;
+      height: 3.125rem;
+      line-height: 3.125rem;
+      border-top-right-radius: 0.2rem;
+      border-top-left-radius: 0.2rem;
+      color: #1c6132;
+      padding-left: 0.5em;
+    }
+    .content{
+      padding-left: 0.5em;
+      padding-top: 1em;
+      background-color: #fff;
+      border-bottom-right-radius: 0.2rem;
+      border-bottom-left-radius: 0.2rem;
+      .avatar{
+        img{
+          float: left;
+          width: 3rem;
+          height: 3rem;
+          border-radius: 0.2rem;
+          vertical-align: middle;
+        }
+        div{
+          padding-top: 0.2em;
+          padding-left: 4.2em;
+          color: #778087;
+        }
+      }
+      .collapse{
+        margin-top: 1em;
+        .link{
+          :hover{
+            color: #369219;
+          }
+          display: inline-block;
+          width: 90%;
+          overflow: hidden;
+          word-wrap: normal;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
 </style>
